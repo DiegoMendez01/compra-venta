@@ -190,7 +190,8 @@ CREATE TABLE customers
 -- compra_ventadb.suppliers definition
 CREATE TABLE suppliers
 (
-    `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+    `id` INT(11) AUTO_INCREMENT,
+	`name` VARCHAR(150) NOT NULL,
     `RUC` VARCHAR(100) NOT NULL,
     `phone` VARCHAR(20) NOT NULL,
 	`address` VARCHAR(200) NOT NULL,
@@ -199,7 +200,77 @@ CREATE TABLE suppliers
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`id`),
     `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
     FOREIGN KEY (`enterprise_id`) REFERENCES `enterprises` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE, 
     INDEX `idx_enterprise_id` (`enterprise_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- compra_ventadb.payments definition
+CREATE TABLE payments
+(
+	`id` INT(11) AUTO_INCREMENT,
+	`name` VARCHAR(200) NOT NULL,
+	`created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- compra_ventadb.menus definition
+CREATE TABLE menus
+(
+	`id` INT(11) AUTO_INCREMENT,
+	`name` VARCHAR(200) NOT NULL,
+	`route` VARCHAR(150) NOT NULL,
+	`identification` VARCHAR(150) NOT NULL,
+	`group` VARCHAR(150) NOT NULL,
+	`created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- compra_ventadb.documents definition
+CREATE TABLE documents
+(
+	`id` INT(11) AUTO_INCREMENT,
+	`name` VARCHAR(200) NOT NULL,
+	`type` VARCHAR(150) NOT NULL,
+	`created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- compra_ventadb.purchases definition
+CREATE TABLE purchases
+(
+	`id` INT(11) AUTO_INCREMENT,
+	`supplier_ruc` VARCHAR(100) NOT NULL,
+	`supplier_address` VARCHAR(200) NOT NULL,
+	`supplier_email` VARCHAR(200) NOT NULL,
+	`subtotal` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`igv` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`total` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`comment` VARCHAR(300) DEFAULT NULL,
+	`branch_id` INT(11) DEFAULT NULL,
+	`payment_id` INT(11) DEFAULT NULL,
+	`user_id` INT(11) DEFAULT NULL,
+	`currency_id` INT(11) DEFAULT NULL,
+	`document_id` INT(11) DEFAULT NULL,
+	`created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`id`),
+	FOREIGN KEY (`payment_id`) REFERENCES payments (`id`),
+	FOREIGN KEY (`branch_id`) REFERENCES branches (`id`),
+	FOREIGN KEY (`user_id`) REFERENCES users (`id`),
+	FOREIGN KEY (`currency_id`) REFERENCES currencies (`id`),
+	FOREIGN KEY (`document_id`) REFERENCES documents (`id`),
+	INDEX `idx_payment_id` (`payment_id`),
+	INDEX `idx_branch_id` (`branch_id`),
+	INDEX `idx_user_id` (`user_id`),
+	INDEX `idx_currency_id` (`currency_id`),
+	INDEX `idx_document_id` (`document_id`)
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
