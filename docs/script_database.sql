@@ -135,7 +135,7 @@ CREATE TABLE units
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE, 
     INDEX `idx_branch_id` (`branch_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
@@ -144,21 +144,21 @@ CREATE TABLE units
 CREATE TABLE products
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
-    `description` VARCHAR(250) NOT NULL,
-    `stock` INT(11) NOT NULL,
-    `expiration_date` DATE NOT NULL,
-    `image` VARCHAR(500),
-    `purchase_price` DECIMAL(18, 2),
-    `selling_price` DECIMAL(18, 2),
-	`category_id` INT(11) NOT NULL,
-    `currency_id` INT(11) NOT NULL,
-    `unit_id` INT(11) NOT NULL,
-    `branch_id` INT(11) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
+    `description` VARCHAR(250) DEFAULT NULL,
+    `stock` INT(11) DEFAULT NULL,
+    `expiration_date` DATE DEFAULT NULL,
+    `image` VARCHAR(500) DEFAULT NULL,
+    `purchase_price` DECIMAL(18, 2) DEFAULT NULL,
+    `selling_price` DECIMAL(18, 2) DEFAULT NULL,
+	`category_id` INT(11) DEFAULT NULL,
+    `currency_id` INT(11) DEFAULT NULL,
+    `unit_id` INT(11) DEFAULT NULL,
+    `branch_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
 	FOREIGN KEY (`currency_id`) REFERENCES `currencies` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -173,16 +173,16 @@ CREATE TABLE products
 CREATE TABLE customers
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
-    `RUC` VARCHAR(100) NOT NULL,
-    `phone` VARCHAR(20) NOT NULL,
-	`address` VARCHAR(200) NOT NULL,
-    `email` VARCHAR(200) NOT NULL,
-    `enterprise_id` INT(11) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
+    `RUC` VARCHAR(100) DEFAULT NULL,
+    `phone` VARCHAR(20) DEFAULT NULL,
+	`address` VARCHAR(200) DEFAULT NULL,
+    `email` VARCHAR(200) DEFAULT NULL,
+    `enterprise_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`enterprise_id`) REFERENCES `enterprises` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE, 
     INDEX `idx_enterprise_id` (`enterprise_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
@@ -191,17 +191,17 @@ CREATE TABLE customers
 CREATE TABLE suppliers
 (
     `id` INT(11) AUTO_INCREMENT,
-	`name` VARCHAR(150) NOT NULL,
-    `RUC` VARCHAR(100) NOT NULL,
-    `phone` VARCHAR(20) NOT NULL,
-	`address` VARCHAR(200) NOT NULL,
-    `email` VARCHAR(200) NOT NULL,
-    `enterprise_id` INT(11) NOT NULL,
+	`name` VARCHAR(150) DEFAULT NULL,
+    `RUC` VARCHAR(100) DEFAULT NULL,
+    `phone` VARCHAR(20) DEFAULT NULL,
+	`address` VARCHAR(200) DEFAULT NULL,
+    `email` VARCHAR(200) DEFAULT NULL,
+    `enterprise_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`),
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`enterprise_id`) REFERENCES `enterprises` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE, 
     INDEX `idx_enterprise_id` (`enterprise_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
@@ -210,10 +210,11 @@ CREATE TABLE suppliers
 CREATE TABLE payments
 (
 	`id` INT(11) AUTO_INCREMENT,
-	`name` VARCHAR(200) NOT NULL,
+	`name` VARCHAR(200) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	`custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -221,13 +222,14 @@ CREATE TABLE payments
 CREATE TABLE menus
 (
 	`id` INT(11) AUTO_INCREMENT,
-	`name` VARCHAR(200) NOT NULL,
-	`route` VARCHAR(150) NOT NULL,
-	`identification` VARCHAR(150) NOT NULL,
-	`group` VARCHAR(150) NOT NULL,
+	`name` VARCHAR(200) DEFAULT NULL,
+	`route` VARCHAR(150) DEFAULT NULL,
+	`identification` VARCHAR(150) DEFAULT NULL,
+	`group` VARCHAR(150) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	`custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -235,11 +237,12 @@ CREATE TABLE menus
 CREATE TABLE documents
 (
 	`id` INT(11) AUTO_INCREMENT,
-	`name` VARCHAR(200) NOT NULL,
-	`type` VARCHAR(150) NOT NULL,
+	`name` VARCHAR(200) DEFAULT NULL,
+	`type` VARCHAR(150) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	`custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
 	PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
 
@@ -247,12 +250,12 @@ CREATE TABLE documents
 CREATE TABLE purchases
 (
 	`id` INT(11) AUTO_INCREMENT,
-	`supplier_ruc` VARCHAR(100) NOT NULL,
-	`supplier_address` VARCHAR(200) NOT NULL,
-	`supplier_email` VARCHAR(200) NOT NULL,
-	`subtotal` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
-	`igv` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
-	`total` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`supplier_ruc` VARCHAR(100) DEFAULT NULL,
+	`supplier_address` VARCHAR(200) DEFAULT NULL,
+	`supplier_email` VARCHAR(200) DEFAULT NULL,
+	`subtotal` DECIMAL(18, 2) DEFAULT 0.00,
+	`igv` DECIMAL(18, 2) DEFAULT 0.00,
+	`total` DECIMAL(18, 2) DEFAULT 0.00,
 	`comment` VARCHAR(300) DEFAULT NULL,
 	`branch_id` INT(11) DEFAULT NULL,
 	`payment_id` INT(11) DEFAULT NULL,
@@ -262,6 +265,7 @@ CREATE TABLE purchases
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	`custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`payment_id`) REFERENCES payments (`id`),
 	FOREIGN KEY (`branch_id`) REFERENCES branches (`id`),
@@ -281,12 +285,13 @@ CREATE TABLE purchase_details
 	`id` INT(11) AUTO_INCREMENT,
 	`purchase_id` INT(11) DEFAULT NULL,
 	`product_id` INT(11) DEFAULT NULL,
-	`product_purchase_price` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
-	`quantity` INT(11) NOT NULL,
-	`total` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`product_purchase_price` DECIMAL(18, 2) DEFAULT 0.00,
+	`quantity` INT(11) DEFAULT NULL,
+	`total` DECIMAL(18, 2) DEFAULT 0.00,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	`custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`product_id`) REFERENCES products (`id`),
 	FOREIGN KEY (`purchase_id`) REFERENCES purchases (`id`),
@@ -298,9 +303,9 @@ CREATE TABLE purchase_details
 CREATE TABLE sales
 (
 	`id` INT(11) AUTO_INCREMENT,
-	`customer_ruc` VARCHAR(100) NOT NULL,
-	`customer_address` VARCHAR(200) NOT NULL,
-	`customer_email` VARCHAR(200) NOT NULL,
+	`customer_ruc` VARCHAR(100) DEFAULT NULL,
+	`customer_address` VARCHAR(200) DEFAULT NULL,
+	`customer_email` VARCHAR(200) DEFAULT NULL,
 	`subtotal` DECIMAL(18, 2) DEFAULT NULL,
 	`igv` DECIMAL(18, 2) DEFAULT NULL,
 	`total` DECIMAL(18, 2) DEFAULT NULL,
@@ -314,6 +319,7 @@ CREATE TABLE sales
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	`custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`branch_id`) REFERENCES branches (`id`),
 	FOREIGN KEY (`payment_id`) REFERENCES payments (`id`),
@@ -333,14 +339,15 @@ CREATE TABLE sales
 CREATE TABLE sale_details
 (
 	`id` INT(11) AUTO_INCREMENT,
-	`product_purchase_price` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
-	`quantity` INT(11) NOT NULL,
-	`total` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`product_purchase_price` DECIMAL(18, 2) DEFAULT 0.00,
+	`quantity` INT(11) DEFAULT NULL,
+	`total` DECIMAL(18, 2) DEFAULT 0.00,
 	`product_id` INT(11) DEFAULT NULL,
 	`sale_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	`custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
 	PRIMARY KEY (`id`),
 	FOREIGN KEY (`product_id`) REFERENCES products (`id`),
 	FOREIGN KEY (`sale_id`) REFERENCES sales (`id`),
