@@ -274,3 +274,76 @@ CREATE TABLE purchases
 	INDEX `idx_currency_id` (`currency_id`),
 	INDEX `idx_document_id` (`document_id`)
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- compra_ventadb.purchase_details definition
+CREATE TABLE purchase_details
+(
+	`id` INT(11) AUTO_INCREMENT,
+	`purchase_id` INT(11) DEFAULT NULL,
+	`product_id` INT(11) DEFAULT NULL,
+	`product_purchase_price` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`quantity` INT(11) NOT NULL,
+	`total` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`id`),
+	FOREIGN KEY (`product_id`) REFERENCES products (`id`),
+	FOREIGN KEY (`purchase_id`) REFERENCES purchases (`id`),
+	INDEX `idx_product_id` (`product_id`),
+	INDEX `idx_purchase_id` (`purchase_id`)
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- compra_ventadb.sales definition
+CREATE TABLE sales
+(
+	`id` INT(11) AUTO_INCREMENT,
+	`customer_ruc` VARCHAR(100) NOT NULL,
+	`customer_address` VARCHAR(200) NOT NULL,
+	`customer_email` VARCHAR(200) NOT NULL,
+	`subtotal` DECIMAL(18, 2) DEFAULT NULL,
+	`igv` DECIMAL(18, 2) DEFAULT NULL,
+	`total` DECIMAL(18, 2) DEFAULT NULL,
+	`comment` VARCHAR(500) DEFAULT NULL,
+	`branch_id` INT(11) DEFAULT NULL,
+	`payment_id` INT(11) DEFAULT NULL,
+	`customer_id` INT(11) DEFAULT NULL,
+	`user_id` INT(11) DEFAULT NULL,
+	`currency_id` INT(11) DEFAULT NULL,
+	`document_id` INT(11) DEFAULT NULL,
+	`created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`id`),
+	FOREIGN KEY (`branch_id`) REFERENCES branches (`id`),
+	FOREIGN KEY (`payment_id`) REFERENCES payments (`id`),
+	FOREIGN KEY (`customer_id`) REFERENCES customers (`id`),
+	FOREIGN KEY (`user_id`) REFERENCES users (`id`),
+	FOREIGN KEY (`currency_id`) REFERENCES currencies (`id`),
+	FOREIGN KEY (`document_id`) REFERENCES documents (`id`),
+	INDEX `idx_branch_id` (`branch_id`),
+	INDEX `idx_payment_id` (`payment_id`),
+	INDEX `idx_customer_id` (`customer_id`),
+	INDEX `idx_user_id` (`user_id`),
+	INDEX `idx_currency_id` (`currency_id`),
+	INDEX `idx_document_id` (`document_id`)
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- compra_ventadb.sale_details definition
+CREATE TABLE sale_details
+(
+	`id` INT(11) AUTO_INCREMENT,
+	`product_purchase_price` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`quantity` INT(11) NOT NULL,
+	`total` DECIMAL(18, 2) DEFAULT 0.00 NOT NULL,
+	`product_id` INT(11) DEFAULT NULL,
+	`sale_id` INT(11) DEFAULT NULL,
+	`created` DATETIME NOT NULL,
+    `modified` TIMESTAMP NOT NULL,
+    `is_active` TINYINT(2) NOT NULL DEFAULT 1,
+	PRIMARY KEY (`id`),
+	FOREIGN KEY (`product_id`) REFERENCES products (`id`),
+	FOREIGN KEY (`sale_id`) REFERENCES sales (`id`),
+	INDEX `idx_product_id` (`product_id`),
+	INDEX `idx_sale_id` (`sale_id`)
+) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
