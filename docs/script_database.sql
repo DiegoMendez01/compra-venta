@@ -10,7 +10,7 @@
 CREATE TABLE companies
 (
 	`id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
@@ -21,13 +21,13 @@ CREATE TABLE companies
 CREATE TABLE enterprises
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
-    `RUC` VARCHAR(100) NOT NULL,
-    `company_id` INT(11) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
+    `RUC` VARCHAR(100) DEFAULT NULL,
+    `company_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`company_id`) REFERENCES `companies` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE, 
     INDEX `idx_company_id` (`company_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
@@ -36,12 +36,12 @@ CREATE TABLE enterprises
 CREATE TABLE branches
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
-    `enterprise_id` INT(11) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
+    `enterprise_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`enterprise_id`) REFERENCES `enterprises` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE, 
     INDEX `idx_enterprise_id` (`enterprise_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
@@ -50,11 +50,11 @@ CREATE TABLE branches
 CREATE TABLE identification_types
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
     `created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`))
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
 
 
@@ -62,22 +62,22 @@ CREATE TABLE identification_types
 CREATE TABLE users
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
-    `last_name` VARCHAR(200) NOT NULL,
-    `email` VARCHAR(100) NOT NULL,
-    `identification_type_id` INT(11) NOT NULL,
-    `identification` VARCHAR(30) NOT NULL,
-    `phone` VARCHAR(30) NOT NULL,
-    `password_hash` VARCHAR(200) NOT NULL,
-    `api_key` VARCHAR(200) NOT NULL,
-    `email_confirmed_token` VARCHAR(200),
-	`phone_confirmed_token` VARCHAR(20),
-    `validate` TINYINT(2) NOT NULL DEFAULT 1,
-    `branch_id` INT(11) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
+    `last_name` VARCHAR(200) DEFAULT NULL,
+    `email` VARCHAR(100) DEFAULT NULL,
+    `identification_type_id` INT(11) DEFAULT NULL,
+    `identification` VARCHAR(30) DEFAULT NULL,
+    `phone` VARCHAR(30) DEFAULT NULL,
+    `password_hash` VARCHAR(200) DEFAULT NULL,
+    `api_key` VARCHAR(200) DEFAULT NULL,
+    `email_confirmed_token` VARCHAR(200) DEFAULT NULL,
+	`phone_confirmed_token` VARCHAR(20) DEFAULT NULL,
+    `validate` TINYINT(2) DEFAULT NULL DEFAULT 1,
+    `branch_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (`identification_type_id`) REFERENCES `identification_types` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
     INDEX `idx_branch_id` (`branch_id`) USING BTREE,
@@ -88,12 +88,12 @@ CREATE TABLE users
 CREATE TABLE roles
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
-    `branch_id` INT(11) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
+    `branch_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE, 
     INDEX `idx_branch_id` (`branch_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
@@ -102,12 +102,12 @@ CREATE TABLE roles
 CREATE TABLE currencies
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
-    `branch_id` INT(11) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
+    `branch_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE, 
     INDEX `idx_branch_id` (`branch_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
@@ -116,12 +116,12 @@ CREATE TABLE currencies
 CREATE TABLE categories
 (
     `id` INT(11) AUTO_INCREMENT PRIMARY KEY,
-    `name` VARCHAR(200) NOT NULL,
-    `branch_id` INT(11) NOT NULL,
+    `name` VARCHAR(200) DEFAULT NULL,
+    `branch_id` INT(11) DEFAULT NULL,
 	`created` DATETIME NOT NULL,
     `modified` TIMESTAMP NOT NULL,
     `is_active` TINYINT(2) NOT NULL DEFAULT 1,
-    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)),
+    `custom_fields` LONGTEXT CHECK (json_valid(`custom_fields`)) DEFAULT NULL,
     FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE, 
     INDEX `idx_branch_id` (`branch_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT charset=utf8mb4 COLLATE=utf8mb4_bin;
